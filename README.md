@@ -93,3 +93,6 @@ ASF is developed as a cybersecurity research framework focused on defensive secu
 ## CREDITS
 
 Conceptual foundation based on modern Zero-Trust architecture principles, OWASP security guidelines, distributed systems theory, and adaptive AI-driven threat modeling research.
+
+Development by ManucianTeam
+Maintainer: manucian-official (L2K)
