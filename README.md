@@ -22,7 +22,7 @@ This scoring mechanism enables ASF to dynamically adjust security posture based 
 
 ## PLACEHOLDER DASHBOARD PREVIEW
 
-<img width="457" height="872" alt="image" src="[https://github.com/user-attachments/assets/3f31febd-1a92-48b0-b1df-362c4b8f9d0f](https://miro.com/app/board/uXjVHWe45Dk=/?moveToWidget=3458764671132749232&cot=14 )" />
+<img width="457" height="872" alt="image" src="[https://github.com/user-attachments/assets/3f31febd-1a92-48b0-b1df-362c4b8f9d0f]" />
 [PLACEHOLDER: INSERT REAL-TIME ATTACK HEATMAP SCREENSHOT HERE]  
 [PLACEHOLDER: INSERT RISK SCORING DASHBOARD UI IMAGE HERE]  
 [PLACEHOLDER: INSERT SYSTEM FLOW ANIMATION GIF HERE]
