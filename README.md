@@ -49,7 +49,7 @@ Backend: NestJS, TypeScript, Node.js; Security Layer: NGINX, Helmet, Redis Distr
 
 ## INSTALLATION & SETUP
 
-1. Clone repository: git clone https://github.com/your-username/asf.git  
+1. Clone repository: git clone https://github.com/ManucianTeam/Adaptive-Shield-Firewall-ASF-  
 2. Install dependencies: npm install  
 3. Configure environment variables: PORT, REDIS_HOST, REDIS_PORT, DATABASE_URL, JWT_SECRET  
 4. Start infrastructure stack: docker-compose up -d  
