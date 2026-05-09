@@ -1,0 +1,117 @@
+[
+  {
+    "ip": "185.199.110.153",
+    "requestCount": 640,
+    "failedRequests": 92,
+    "anomalyCount": 8,
+    "blockedCount": 2,
+    "suspiciousScore": 74,
+    "confidenceScore": 78,
+    "riskScore": 72,
+    "behaviorMatches": 4,
+    "blacklistHits": 0,
+    "isVpn": true,
+    "isTor": false,
+    "isProxy": true,
+    "isBot": false,
+    "raceConditionDetected": false,
+    "userAgent": "Mozilla/5.0 Chrome/124.0",
+    "country": "RU",
+    "metadata": {
+      "pattern": "REQUEST_BURST",
+      "target": "/api/login"
+    }
+  },
+  {
+    "ip": "45.33.22.91",
+    "requestCount": 870,
+    "failedRequests": 140,
+    "anomalyCount": 11,
+    "blockedCount": 3,
+    "suspiciousScore": 82,
+    "confidenceScore": 85,
+    "riskScore": 84,
+    "behaviorMatches": 5,
+    "blacklistHits": 1,
+    "isVpn": false,
+    "isTor": true,
+    "isProxy": true,
+    "isBot": true,
+    "raceConditionDetected": false,
+    "userAgent": "curl/8.5.0",
+    "country": "NL",
+    "metadata": {
+      "pattern": "LOGIN_BRUTEFORCE",
+      "target": "/api/auth/login"
+    }
+  },
+  {
+    "ip": "103.21.244.7",
+    "requestCount": 430,
+    "failedRequests": 60,
+    "anomalyCount": 5,
+    "blockedCount": 1,
+    "suspiciousScore": 67,
+    "confidenceScore": 70,
+    "riskScore": 65,
+    "behaviorMatches": 3,
+    "blacklistHits": 0,
+    "isVpn": true,
+    "isTor": false,
+    "isProxy": false,
+    "isBot": false,
+    "raceConditionDetected": false,
+    "userAgent": "PostmanRuntime/7.36.1",
+    "country": "IN",
+    "metadata": {
+      "pattern": "TOKEN_SPAM",
+      "target": "/api/token/refresh"
+    }
+  },
+  {
+    "ip": "172.67.44.201",
+    "requestCount": 1200,
+    "failedRequests": 210,
+    "anomalyCount": 16,
+    "blockedCount": 5,
+    "suspiciousScore": 94,
+    "confidenceScore": 96,
+    "riskScore": 98,
+    "behaviorMatches": 8,
+    "blacklistHits": 2,
+    "isVpn": true,
+    "isTor": true,
+    "isProxy": true,
+    "isBot": true,
+    "raceConditionDetected": true,
+    "userAgent": "python-requests/2.31",
+    "country": "DE",
+    "metadata": {
+      "pattern": "API_ABUSE",
+      "target": "/api/payment/confirm"
+    }
+  },
+  {
+    "ip": "198.51.100.24",
+    "requestCount": 510,
+    "failedRequests": 44,
+    "anomalyCount": 6,
+    "blockedCount": 2,
+    "suspiciousScore": 71,
+    "confidenceScore": 73,
+    "riskScore": 69,
+    "behaviorMatches": 4,
+    "blacklistHits": 0,
+    "isVpn": false,
+    "isTor": false,
+    "isProxy": true,
+    "isBot": false,
+    "raceConditionDetected": false,
+    "userAgent": "Mozilla/5.0 Firefox/126.0",
+    "country": "BR",
+    "metadata": {
+      "pattern": "SCRAPING_ACTIVITY",
+      "target": "/api/products"
+    }
+  }
+]

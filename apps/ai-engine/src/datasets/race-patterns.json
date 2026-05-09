@@ -1,0 +1,122 @@
+[
+  {
+    "ip": "45.12.88.201",
+    "requestCount": 1200,
+    "failedRequests": 210,
+    "anomalyCount": 18,
+    "blockedCount": 5,
+    "suspiciousScore": 92,
+    "confidenceScore": 95,
+    "riskScore": 96,
+    "behaviorMatches": 7,
+    "blacklistHits": 1,
+    "isVpn": true,
+    "isTor": false,
+    "isProxy": true,
+    "isBot": true,
+    "raceConditionDetected": true,
+    "userAgent": "python-requests/2.31",
+    "country": "RU",
+    "metadata": {
+      "pattern": "DOUBLE_SPENDING",
+      "target": "/api/payment/confirm",
+      "parallelRequests": 48
+    }
+  },
+  {
+    "ip": "103.77.21.91",
+    "requestCount": 980,
+    "failedRequests": 150,
+    "anomalyCount": 15,
+    "blockedCount": 4,
+    "suspiciousScore": 88,
+    "confidenceScore": 90,
+    "riskScore": 91,
+    "behaviorMatches": 6,
+    "blacklistHits": 1,
+    "isVpn": false,
+    "isTor": true,
+    "isProxy": true,
+    "isBot": true,
+    "raceConditionDetected": true,
+    "userAgent": "curl/8.0",
+    "country": "NL",
+    "metadata": {
+      "pattern": "MULTI_CLICK_ABUSE",
+      "target": "/api/coupon/redeem",
+      "parallelRequests": 35
+    }
+  },
+  {
+    "ip": "185.220.101.55",
+    "requestCount": 1500,
+    "failedRequests": 320,
+    "anomalyCount": 24,
+    "blockedCount": 8,
+    "suspiciousScore": 99,
+    "confidenceScore": 99,
+    "riskScore": 100,
+    "behaviorMatches": 10,
+    "blacklistHits": 2,
+    "isVpn": false,
+    "isTor": true,
+    "isProxy": true,
+    "isBot": true,
+    "raceConditionDetected": true,
+    "userAgent": "axios/1.6.7",
+    "country": "DE",
+    "metadata": {
+      "pattern": "RAPID_PARALLEL_REQUESTS",
+      "target": "/api/order/checkout",
+      "parallelRequests": 72
+    }
+  },
+  {
+    "ip": "91.214.44.18",
+    "requestCount": 870,
+    "failedRequests": 132,
+    "anomalyCount": 11,
+    "blockedCount": 3,
+    "suspiciousScore": 84,
+    "confidenceScore": 82,
+    "riskScore": 85,
+    "behaviorMatches": 5,
+    "blacklistHits": 0,
+    "isVpn": true,
+    "isTor": false,
+    "isProxy": false,
+    "isBot": true,
+    "raceConditionDetected": true,
+    "userAgent": "PostmanRuntime/7.36",
+    "country": "UA",
+    "metadata": {
+      "pattern": "DUPLICATE_SUBMIT",
+      "target": "/api/wallet/withdraw",
+      "parallelRequests": 22
+    }
+  },
+  {
+    "ip": "172.104.166.44",
+    "requestCount": 1110,
+    "failedRequests": 201,
+    "anomalyCount": 17,
+    "blockedCount": 6,
+    "suspiciousScore": 90,
+    "confidenceScore": 93,
+    "riskScore": 94,
+    "behaviorMatches": 8,
+    "blacklistHits": 1,
+    "isVpn": true,
+    "isTor": false,
+    "isProxy": true,
+    "isBot": true,
+    "raceConditionDetected": true,
+    "userAgent": "HeadlessChrome/124.0",
+    "country": "SG",
+    "metadata": {
+      "pattern": "TOKEN_REUSE_RACE",
+      "target": "/api/auth/refresh",
+      "parallelRequests": 41
+    }
+  }
+]

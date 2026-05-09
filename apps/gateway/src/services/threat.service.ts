@@ -1,0 +1,4 @@
+score =
+rateAbuse +
+behaviorRisk +
+raceRisk;
