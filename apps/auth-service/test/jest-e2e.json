@@ -1,0 +1,30 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "^@/(.*)$": "<rootDir>/../src/$1",
+    "^@auth/(.*)$": "<rootDir>/../src/auth/$1",
+    "^@users/(.*)$": "<rootDir>/../src/users/$1",
+    "^@common/(.*)$": "<rootDir>/../src/common/$1",
+    "^@config/(.*)$": "<rootDir>/../src/config/$1",
+    "^@database/(.*)$": "<rootDir>/../src/database/$1",
+    "^@redis/(.*)$": "<rootDir>/../src/redis/$1",
+    "^@security/(.*)$": "<rootDir>/../src/ai-security/$1"
+  },
+  "collectCoverage": true,
+  "coverageDirectory": "../coverage/e2e",
+  "coverageProvider": "v8",
+  "verbose": true,
+  "detectOpenHandles": true,
+  "forceExit": true,
+  "testTimeout": 30000
+}

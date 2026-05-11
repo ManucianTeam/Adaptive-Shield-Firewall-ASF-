@@ -43,11 +43,7 @@ export interface PredictionInput {
 }
 
 export interface PredictionResult {
-  prediction:
-    | 'safe'
-    | 'suspicious'
-    | 'malicious'
-    | 'critical';
+  prediction: "safe" | "suspicious" | "malicious" | "critical";
 
   confidence: number;
 

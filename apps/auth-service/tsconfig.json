@@ -1,0 +1,88 @@
+{
+  "compilerOptions": {
+    /* =========================================================================
+       Language & Environment
+       ========================================================================= */
+    "target": "ES2022",
+    "module": "commonjs",
+    "lib": ["ES2022"],
+
+    /* =========================================================================
+       Output Configuration
+       ========================================================================= */
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "sourceMap": true,
+    "declaration": true,
+    "removeComments": false,
+
+    /* =========================================================================
+       Strict Type Safety
+       ========================================================================= */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": false,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+
+    /* =========================================================================
+       Module Resolution
+       ========================================================================= */
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "@auth/*": ["src/auth/*"],
+      "@users/*": ["src/users/*"],
+      "@common/*": ["src/common/*"],
+      "@config/*": ["src/config/*"],
+      "@database/*": ["src/database/*"],
+      "@redis/*": ["src/redis/*"],
+      "@security/*": ["src/ai-security/*"]
+    },
+
+    /* =========================================================================
+       Experimental Features
+       ========================================================================= */
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    /* =========================================================================
+       Interoperability
+       ========================================================================= */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+
+    /* =========================================================================
+       Build Performance
+       ========================================================================= */
+    "incremental": true,
+    "skipLibCheck": true,
+
+    /* =========================================================================
+       Consistency & Cleanliness
+       ========================================================================= */
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* =========================================================================
+       Type Definitions
+       ========================================================================= */
+    "types": ["node", "jest"]
+  },
+
+  "include": [
+    "src/**/*",
+    "test/**/*"
+  ],
+
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage"
+  ]
+}

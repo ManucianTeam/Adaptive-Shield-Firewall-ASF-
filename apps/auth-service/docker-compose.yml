@@ -1,0 +1,145 @@
+version: "3.9"
+
+# ============================================================================
+# Adaptive Shield Firewall (ASF)
+# Auth-Service Infrastructure Stack
+# ============================================================================
+
+services:
+
+  # --------------------------------------------------------------------------
+  # Auth Service (NestJS)
+  # --------------------------------------------------------------------------
+  auth-service:
+    container_name: asf-auth-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    restart: unless-stopped
+
+    ports:
+      - "3001:3001"
+
+    environment:
+      NODE_ENV: production
+
+      # ----------------------------------------------------------------------
+      # Application
+      # ----------------------------------------------------------------------
+      PORT: 3001
+
+      # ----------------------------------------------------------------------
+      # JWT
+      # ----------------------------------------------------------------------
+      JWT_ACCESS_SECRET: super_secure_access_secret
+      JWT_REFRESH_SECRET: super_secure_refresh_secret
+
+      JWT_ACCESS_EXPIRES: 15m
+      JWT_REFRESH_EXPIRES: 7d
+
+      # ----------------------------------------------------------------------
+      # PostgreSQL
+      # ----------------------------------------------------------------------
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: asf_user
+      DB_PASSWORD: asf_password
+      DB_NAME: asf_auth
+
+      # ----------------------------------------------------------------------
+      # Redis
+      # ----------------------------------------------------------------------
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+    depends_on:
+      - postgres
+      - redis
+
+    networks:
+      - asf-network
+
+    volumes:
+      - ./:/app
+
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # --------------------------------------------------------------------------
+  # PostgreSQL Database
+  # --------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+
+    container_name: asf-postgres
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: asf_user
+      POSTGRES_PASSWORD: asf_password
+      POSTGRES_DB: asf_auth
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    networks:
+      - asf-network
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U asf_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # --------------------------------------------------------------------------
+  # Redis Cache / Session Store
+  # --------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+
+    container_name: asf-redis
+
+    restart: unless-stopped
+
+    ports:
+      - "6379:6379"
+
+    command: >
+      redis-server
+      --appendonly yes
+      --maxmemory 512mb
+      --maxmemory-policy allkeys-lru
+
+    volumes:
+      - redis_data:/data
+
+    networks:
+      - asf-network
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# ============================================================================
+# Persistent Volumes
+# ============================================================================
+volumes:
+  postgres_data:
+  redis_data:
+
+# ============================================================================
+# Internal Network
+# ============================================================================
+networks:
+  asf-network:
+    driver: bridge
