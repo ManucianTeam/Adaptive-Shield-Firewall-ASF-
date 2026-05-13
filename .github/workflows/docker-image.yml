@@ -1,0 +1,165 @@
+# .github/workflows/docker-ci.yml
+
+name: ASF Auth-Service CI/CD
+
+on:
+push:
+branches:
+- main
+- develop
+
+pull_request:
+branches:
+- main
+
+env:
+IMAGE_NAME: asf-auth-service
+
+jobs:
+build-test-security:
+name: Build • Test • Security Scan
+
+```
+runs-on: ubuntu-latest
+
+steps:
+  # ==========================================================================
+  # Checkout Repository
+  # ==========================================================================
+
+  - name: Checkout source
+    uses: actions/checkout@v4
+
+  # ==========================================================================
+  # Setup Node.js
+  # ==========================================================================
+
+  - name: Setup Node.js
+    uses: actions/setup-node@v4
+    with:
+      node-version: 20
+      cache: npm
+
+  # ==========================================================================
+  # Install Dependencies
+  # ==========================================================================
+
+  - name: Install dependencies
+    run: npm ci
+
+  # ==========================================================================
+  # Static Analysis
+  # ==========================================================================
+
+  - name: Run ESLint
+    run: npm run lint
+
+  # ==========================================================================
+  # Unit Tests
+  # ==========================================================================
+
+  - name: Run unit tests
+    run: npm run test
+
+  # ==========================================================================
+  # E2E Tests
+  # ==========================================================================
+
+  - name: Run e2e tests
+    run: npm run test:e2e
+
+  # ==========================================================================
+  # Production Build
+  # ==========================================================================
+
+  - name: Build project
+    run: npm run build
+
+  # ==========================================================================
+  # Docker Buildx
+  # ==========================================================================
+
+  - name: Setup Docker Buildx
+    uses: docker/setup-buildx-action@v3
+
+  # ==========================================================================
+  # Build Docker Image
+  # ==========================================================================
+
+  - name: Build Docker image
+    run: |
+      docker build \
+        --file Dockerfile \
+        --tag $IMAGE_NAME:${{ github.sha }} \
+        --tag $IMAGE_NAME:latest \
+        .
+
+  # ==========================================================================
+  # Security Scan (Trivy)
+  # ==========================================================================
+
+  - name: Run Trivy vulnerability scanner
+    uses: aquasecurity/trivy-action@master
+    with:
+      image-ref: ${{ env.IMAGE_NAME }}:${{ github.sha }}
+      format: table
+      exit-code: 1
+      ignore-unfixed: true
+      vuln-type: os,library
+      severity: CRITICAL,HIGH
+```
+
+docker-publish:
+name: Publish Docker Image
+
+```
+needs: build-test-security
+
+if: github.ref == 'refs/heads/main'
+
+runs-on: ubuntu-latest
+
+steps:
+  # ==========================================================================
+  # Checkout
+  # ==========================================================================
+
+  - name: Checkout source
+    uses: actions/checkout@v4
+
+  # ==========================================================================
+  # Docker Login
+  # ==========================================================================
+
+  - name: Login to GitHub Container Registry
+    uses: docker/login-action@v3
+    with:
+      registry: ghcr.io
+      username: ${{ github.actor }}
+      password: ${{ secrets.GITHUB_TOKEN }}
+
+  # ==========================================================================
+  # Buildx
+  # ==========================================================================
+
+  - name: Setup Docker Buildx
+    uses: docker/setup-buildx-action@v3
+
+  # ==========================================================================
+  # Build & Push
+  # ==========================================================================
+
+  - name: Build and push Docker image
+    uses: docker/build-push-action@v6
+    with:
+      context: .
+      file: ./Dockerfile
+      push: true
+
+      tags: |
+        ghcr.io/${{ github.repository }}/asf-auth-service:latest
+        ghcr.io/${{ github.repository }}/asf-auth-service:${{ github.sha }}
+
+      cache-from: type=gha
+      cache-to: type=gha,mode=max
+```
