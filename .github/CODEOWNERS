@@ -8,7 +8,7 @@
 
 # Global Ownership
 
-* @manucian-official
+* @asf/ManucianTeam
 
 # ============================================================================
 
@@ -16,10 +16,10 @@
 
 # ============================================================================
 
-/apps/auth-service/src/ai-security/ @security-team
-/apps/auth-service/src/auth/guards/ @security-team
-/apps/auth-service/src/auth/strategies/ @security-team
-/apps/auth-service/src/auth/middleware/ @security-team
+/apps/auth-service/src/ai-security/ @manucian-official
+/apps/auth-service/src/auth/guards/ @manucian-official
+/apps/auth-service/src/auth/strategies/ @manucian-official
+/apps/auth-service/src/auth/middleware/ @manucian-official
 
 # ============================================================================
 
@@ -27,7 +27,7 @@
 
 # ============================================================================
 
-/apps/auth-service/src/database/ @backend-team
+/apps/auth-service/src/database/ @manucian-official
 
 # ============================================================================
 
@@ -35,7 +35,7 @@
 
 # ============================================================================
 
-/apps/auth-service/src/redis/ @backend-team
+/apps/auth-service/src/redis/ @manucian-official
 
 # ============================================================================
 
@@ -43,7 +43,7 @@
 
 # ============================================================================
 
-/.github/workflows/ @devops-team
+/.github/workflows/ @manucian-official
 
 # ============================================================================
 
@@ -51,8 +51,8 @@
 
 # ============================================================================
 
-/Dockerfile @devops-team
-/docker-compose.yml @devops-team
+/Dockerfile @YOUR_GITHUB_USERNAME
+/docker-compose.yml @YOUR_GITHUB_USERNAME
 
 # ============================================================================
 
@@ -60,4 +60,4 @@
 
 # ============================================================================
 
-/README.md @docs-team
+/README.md @YOUR_GITHUB_USERNAME
