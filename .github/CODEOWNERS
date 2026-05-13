@@ -1,333 +1,46 @@
-```txt
-# ============================================================================
-# Adaptive Shield Firewall (ASF)
-# CODEOWNERS
-# ============================================================================
-#
-# This file defines ownership boundaries for the ASF infrastructure.
-#
-# GitHub automatically requests reviews from the listed owners whenever
-# matching files or directories are modified inside pull requests.
-#
-# Security-sensitive areas intentionally use explicit ownership mappings
-# to reinforce review visibility across authentication, AI-security,
-# infrastructure, distributed systems, and deployment layers.
-#
-# ============================================================================
-# Ownership Model
-# ============================================================================
-#
-# Primary Maintainer:
-#   @ManucianTeam
-#
-# Protected Domains:
-#
-#   - Authentication Infrastructure
-#   - AI Security & Threat Detection
-#   - JWT / Session Security
-#   - Redis Distributed Coordination
-#   - Database Infrastructure
-#   - CI/CD Security Pipelines
-#   - Containerization & Deployment
-#   - Security Documentation
-#
-# ============================================================================
-# Global Repository Ownership
-# ============================================================================
-#
-# Fallback ownership applied to all repository files unless a more specific
-# rule overrides the match below.
-#
 # ============================================================================
 
-* @ManucianTeam
+# ASF CODEOWNERS
 
 # ============================================================================
-# Authentication Infrastructure
-# ============================================================================
-#
-# Covers:
-#
-#   - JWT authentication
-#   - token issuance
-#   - session orchestration
-#   - role enforcement
-#   - access control
-#   - authentication middleware
-#   - authorization strategies
-#   - password workflows
-#
-# ============================================================================
 
-/apps/auth-service/src/auth/ @ManucianTeam
+# Global Ownership
 
-/apps/auth-service/src/auth/controllers/ @ManucianTeam
-/apps/auth-service/src/auth/services/ @ManucianTeam
-/apps/auth-service/src/auth/guards/ @ManucianTeam
-/apps/auth-service/src/auth/strategies/ @ManucianTeam
-/apps/auth-service/src/auth/dto/ @ManucianTeam
-/apps/auth-service/src/auth/interfaces/ @ManucianTeam
-/apps/auth-service/src/auth/decorators/ @ManucianTeam
-/apps/auth-service/src/auth/middleware/ @ManucianTeam
-/apps/auth-service/src/auth/events/ @ManucianTeam
-
-/apps/auth-service/src/auth/auth.module.ts @ManucianTeam
-/apps/auth-service/src/auth/auth.constants.ts @ManucianTeam
+* @ManucianTeam/security-team
 
 # ============================================================================
-# AI Security Infrastructure
-# ============================================================================
-#
-# Covers:
-#
-#   - anomaly detection
-#   - behavioral analytics
-#   - geographic threat analysis
-#   - adaptive risk scoring
-#   - suspicious request detection
-#   - Zero Trust telemetry
-#
-# ============================================================================
 
-/apps/auth-service/src/ai-security/ @ManucianTeam
-
-/apps/auth-service/src/ai-security/analyzers/ @ManucianTeam
-/apps/auth-service/src/ai-security/services/ @ManucianTeam
-/apps/auth-service/src/ai-security/interfaces/ @ManucianTeam
-/apps/auth-service/src/ai-security/ai-security.module.ts @ManucianTeam
+# Authentication & Security
 
 # ============================================================================
-# User Domain Infrastructure
-# ============================================================================
-#
-# Covers:
-#
-#   - user entities
-#   - persistence layer
-#   - repositories
-#   - profile management
-#   - user lifecycle orchestration
-#
-# ============================================================================
 
-/apps/auth-service/src/users/ @ManucianTeam
-
-/apps/auth-service/src/users/controllers/ @ManucianTeam
-/apps/auth-service/src/users/services/ @ManucianTeam
-/apps/auth-service/src/users/entities/ @ManucianTeam
-/apps/auth-service/src/users/repositories/ @ManucianTeam
-/apps/auth-service/src/users/dto/ @ManucianTeam
+/apps/auth-service/src/auth/ @ManucianTeam/security-team
+/apps/auth-service/src/ai-security/ @ManucianTeam/security-team
 
 # ============================================================================
-# Database Infrastructure
-# ============================================================================
-#
-# Covers:
-#
-#   - PostgreSQL integration
-#   - entities
-#   - migrations
-#   - seeding
-#   - schema management
-#   - transactional boundaries
-#
-# ============================================================================
 
-/apps/auth-service/src/database/ @ManucianTeam
-
-/apps/auth-service/src/database/entities/ @ManucianTeam
-/apps/auth-service/src/database/migrations/ @ManucianTeam
-/apps/auth-service/src/database/seeds/ @ManucianTeam
-/apps/auth-service/src/database/database.module.ts @ManucianTeam
+# Backend Infrastructure
 
 # ============================================================================
-# Redis & Distributed Coordination
-# ============================================================================
-#
-# Covers:
-#
-#   - distributed locks
-#   - session cache
-#   - rate limiting
-#   - synchronization primitives
-#   - high-speed cache orchestration
-#
-# ============================================================================
 
-/apps/auth-service/src/redis/ @ManucianTeam
-
-/apps/auth-service/src/redis/redis.service.ts @ManucianTeam
-/apps/auth-service/src/redis/distributed-lock.service.ts @ManucianTeam
-/apps/auth-service/src/redis/redis.module.ts @ManucianTeam
+/apps/auth-service/src/database/ @ManucianTeam/backend-team
+/apps/auth-service/src/redis/ @ManucianTeam/backend-team
 
 # ============================================================================
-# Shared Infrastructure
-# ============================================================================
-#
-# Covers:
-#
-#   - interceptors
-#   - exception handling
-#   - utility libraries
-#   - constants
-#   - logging systems
-#   - framework abstractions
-#
-# ============================================================================
 
-/apps/auth-service/src/common/ @ManucianTeam
-
-/apps/auth-service/src/common/filters/ @ManucianTeam
-/apps/auth-service/src/common/interceptors/ @ManucianTeam
-/apps/auth-service/src/common/exceptions/ @ManucianTeam
-/apps/auth-service/src/common/utils/ @ManucianTeam
-/apps/auth-service/src/common/constants/ @ManucianTeam
-/apps/auth-service/src/common/logger/ @ManucianTeam
+# CI/CD & DevOps
 
 # ============================================================================
-# Configuration Infrastructure
-# ============================================================================
-#
-# Covers:
-#
-#   - JWT configuration
-#   - Redis configuration
-#   - database configuration
-#   - security policy configuration
-#   - environment orchestration
-#
-# ============================================================================
 
-/apps/auth-service/src/config/ @ManucianTeam
-
-/apps/auth-service/src/config/jwt.config.ts @ManucianTeam
-/apps/auth-service/src/config/redis.config.ts @ManucianTeam
-/apps/auth-service/src/config/database.config.ts @ManucianTeam
-/apps/auth-service/src/config/security.config.ts @ManucianTeam
+/.github/workflows/ @ManucianTeam/devops-team
+/Dockerfile @ManucianTeam/devops-team
+/docker-compose.yml @ManucianTeam/devops-team
 
 # ============================================================================
-# Application Bootstrap
-# ============================================================================
-#
-# Covers:
-#
-#   - NestJS bootstrap pipeline
-#   - dependency injection root
-#   - global middleware
-#   - runtime initialization
-#
-# ============================================================================
 
-/apps/auth-service/src/app.module.ts @ManucianTeam
-/apps/auth-service/src/main.ts @ManucianTeam
-
-# ============================================================================
-# Testing Infrastructure
-# ============================================================================
-#
-# Covers:
-#
-#   - integration testing
-#   - E2E validation
-#   - authentication verification
-#   - infrastructure validation
-#
-# ============================================================================
-
-/apps/auth-service/test/ @ManucianTeam
-
-/apps/auth-service/test/auth.e2e-spec.ts @ManucianTeam
-/apps/auth-service/test/jest-e2e.json @ManucianTeam
-
-# ============================================================================
-# CI/CD Infrastructure
-# ============================================================================
-#
-# Covers:
-#
-#   - GitHub Actions
-#   - security scanning
-#   - dependency auditing
-#   - release automation
-#   - container pipelines
-#
-# ============================================================================
-
-/.github/ @ManucianTeam
-/.github/workflows/ @ManucianTeam
-
-/.github/workflows/docker-image.yml @ManucianTeam
-/.github/workflows/security-scan.yml @ManucianTeam
-/.github/workflows/codeql-analysis.yml @ManucianTeam
-/.github/workflows/lint-and-test.yml @ManucianTeam
-/.github/workflows/release.yml @ManucianTeam
-/.github/workflows/dependency-audit.yml @ManucianTeam
-
-# ============================================================================
-# Containerization & Deployment
-# ============================================================================
-#
-# Covers:
-#
-#   - Docker images
-#   - container orchestration
-#   - runtime deployment
-#   - infrastructure portability
-#
-# ============================================================================
-
-/Dockerfile @ManucianTeam
-/docker-compose.yml @ManucianTeam
-
-# ============================================================================
-# TypeScript Infrastructure
-# ============================================================================
-#
-# Covers:
-#
-#   - compiler configuration
-#   - NestJS CLI configuration
-#   - build orchestration
-#
-# ============================================================================
-
-/tsconfig.json @ManucianTeam
-/nest-cli.json @ManucianTeam
-/package.json @ManucianTeam
-
-# ============================================================================
-# Environment & Secrets Management
-# ============================================================================
-#
-# Covers:
-#
-#   - runtime environment variables
-#   - local development configuration
-#   - deployment environment contracts
-#
-# ============================================================================
-
-/.env @ManucianTeam
-/.gitignore @ManucianTeam
-
-# ============================================================================
 # Documentation
-# ============================================================================
-#
-# Covers:
-#
-#   - architecture documentation
-#   - setup guides
-#   - deployment instructions
-#   - infrastructure explanation
-#
-# ============================================================================
-
-/README.md @ManucianTeam
-/.github/SECURITY.md @ManucianTeam
-/.github/PULL_REQUEST_TEMPLATE.md @ManucianTeam
 
 # ============================================================================
-# End Of CODEOWNERS
-# ============================================================================
-```
+
+/README.md @ManucianTeam/docs-team
+/.github/SECURITY.md @ManucianTeam/docs-team
