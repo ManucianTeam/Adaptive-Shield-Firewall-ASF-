@@ -1,0 +1,166 @@
+# .github/workflows/dependency-audit.yml
+
+name: ASF Dependency Audit
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+  pull_request:
+    branches:
+      - main
+
+  schedule:
+    # Daily audit at 02:00 UTC
+    - cron: '0 2 * * *'
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  dependency-audit:
+    name: Dependency • Supply Chain • License Audit
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 30
+
+    steps:
+      # ==========================================================================
+      # Checkout Repository
+      # ==========================================================================
+
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      # ==========================================================================
+      # Setup Node.js
+      # ==========================================================================
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # ==========================================================================
+      # Install Dependencies
+      # ==========================================================================
+
+      - name: Install dependencies
+        run: npm ci
+
+      # ==========================================================================
+      # NPM Security Audit
+      # ==========================================================================
+
+      - name: Run npm audit
+        run: |
+          npm audit \
+            --audit-level=high
+
+      # ==========================================================================
+      # Production Dependency Audit
+      # ==========================================================================
+
+      - name: Audit production dependencies
+        run: |
+          npm audit \
+            --omit=dev \
+            --audit-level=moderate
+
+      # ==========================================================================
+      # License Compliance Audit
+      # ==========================================================================
+
+      - name: Install license checker
+        run: |
+          npm install -g license-checker
+
+      - name: Validate dependency licenses
+        run: |
+          license-checker \
+            --production \
+            --summary \
+            --excludePrivatePackages
+
+      # ==========================================================================
+      # Generate Dependency Tree
+      # ==========================================================================
+
+      - name: Generate dependency tree
+        run: |
+          npm ls --all > dependency-tree.txt || true
+
+      # ==========================================================================
+      # Detect Outdated Dependencies
+      # ==========================================================================
+
+      - name: Check outdated packages
+        run: |
+          npm outdated || true
+
+      # ==========================================================================
+      # Install OSV Scanner
+      # ==========================================================================
+
+      - name: Install OSV Scanner
+        run: |
+          curl -L \
+            -o osv-scanner \
+            https://github.com/google/osv-scanner/releases/latest/download/osv-scanner_linux_amd64
+
+          chmod +x osv-scanner
+
+      # ==========================================================================
+      # Run OSV Vulnerability Scan
+      # ==========================================================================
+
+      - name: Run OSV scan
+        run: |
+          ./osv-scanner \
+            --lockfile=package-lock.json \
+            --format=json \
+            > osv-report.json
+
+      # ==========================================================================
+      # Supply Chain Integrity Check
+      # ==========================================================================
+
+      - name: Verify package integrity
+        run: |
+          npm cache verify
+
+      # ==========================================================================
+      # Upload Audit Reports
+      # ==========================================================================
+
+      - name: Upload dependency audit artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+
+        with:
+          name: dependency-audit-reports
+
+          path: |
+            dependency-tree.txt
+            osv-report.json
+            package-lock.json
+
+          if-no-files-found: ignore
+
+      # ==========================================================================
+      # Dependency Review (Pull Requests)
+      # ==========================================================================
+
+      - name: Dependency review
+        if: github.event_name == 'pull_request'
+
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high

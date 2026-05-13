@@ -1,0 +1,138 @@
+# .github/workflows/codeql-analysis.yml
+
+name: ASF CodeQL Analysis
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+  pull_request:
+    branches:
+      - main
+
+  schedule:
+    # Runs every Sunday at 03:00 UTC
+    - cron: '0 3 * * 0'
+
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    name: Static Analysis • CodeQL
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 45
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        language:
+          - javascript
+
+    steps:
+      # ==========================================================================
+      # Checkout Repository
+      # ==========================================================================
+
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      # ==========================================================================
+      # Initialize CodeQL
+      # ==========================================================================
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+
+          queries: >
+            security-extended,
+            security-and-quality
+
+      # ==========================================================================
+      # Setup Node.js
+      # ==========================================================================
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # ==========================================================================
+      # Install Dependencies
+      # ==========================================================================
+
+      - name: Install dependencies
+        run: npm ci
+
+      # ==========================================================================
+      # Environment Bootstrap
+      # ==========================================================================
+
+      - name: Create environment file
+        run: |
+          cat <<EOF > .env
+          NODE_ENV=test
+          PORT=3000
+
+          JWT_SECRET=test-secret
+          JWT_REFRESH_SECRET=test-refresh-secret
+
+          DB_HOST=localhost
+          DB_PORT=5432
+          DB_USERNAME=postgres
+          DB_PASSWORD=postgres
+          DB_DATABASE=asf_test
+
+          REDIS_HOST=localhost
+          REDIS_PORT=6379
+          EOF
+
+      # ==========================================================================
+      # Build Project
+      # ==========================================================================
+
+      - name: Build application
+        run: npm run build
+
+      # ==========================================================================
+      # Run Unit Tests
+      # ==========================================================================
+
+      - name: Run unit tests
+        run: npm run test -- --passWithNoTests
+
+      # ==========================================================================
+      # Perform CodeQL Analysis
+      # ==========================================================================
+
+      - name: Analyze source code
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: >
+            /language:${{ matrix.language }}
+
+      # ==========================================================================
+      # Upload Diagnostic Artifacts
+      # ==========================================================================
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: codeql-analysis-artifacts
+          path: |
+            coverage/
+            dist/
+          if-no-files-found: ignore

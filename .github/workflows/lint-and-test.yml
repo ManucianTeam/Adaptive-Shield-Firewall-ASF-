@@ -1,0 +1,212 @@
+# .github/workflows/lint-and-test.yml
+
+name: ASF Lint & Test Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint-and-test:
+    name: Lint • Unit Test • E2E
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 30
+
+    services:
+      # ==========================================================================
+      # PostgreSQL Test Infrastructure
+      # ==========================================================================
+
+      postgres:
+        image: postgres:16
+
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: asf_test
+
+        ports:
+          - 5432:5432
+
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+      # ==========================================================================
+      # Redis Test Infrastructure
+      # ==========================================================================
+
+      redis:
+        image: redis:7-alpine
+
+        ports:
+          - 6379:6379
+
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      # ==========================================================================
+      # Application Environment
+      # ==========================================================================
+
+      NODE_ENV: test
+
+      PORT: 3000
+
+      # ==========================================================================
+      # JWT
+      # ==========================================================================
+
+      JWT_SECRET: test-super-secret-key
+
+      JWT_REFRESH_SECRET: test-refresh-secret-key
+
+      JWT_EXPIRES_IN: 15m
+
+      JWT_REFRESH_EXPIRES_IN: 7d
+
+      # ==========================================================================
+      # PostgreSQL
+      # ==========================================================================
+
+      DB_HOST: localhost
+
+      DB_PORT: 5432
+
+      DB_USERNAME: postgres
+
+      DB_PASSWORD: postgres
+
+      DB_DATABASE: asf_test
+
+      # ==========================================================================
+      # Redis
+      # ==========================================================================
+
+      REDIS_HOST: localhost
+
+      REDIS_PORT: 6379
+
+      REDIS_PASSWORD:
+
+      # ==========================================================================
+      # Security
+      # ==========================================================================
+
+      BCRYPT_SALT_ROUNDS: 10
+
+      RATE_LIMIT_TTL: 60
+
+      RATE_LIMIT_MAX: 100
+
+    steps:
+      # ==========================================================================
+      # Checkout Repository
+      # ==========================================================================
+
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      # ==========================================================================
+      # Setup Node.js
+      # ==========================================================================
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # ==========================================================================
+      # Install Dependencies
+      # ==========================================================================
+
+      - name: Install dependencies
+        run: npm ci
+
+      # ==========================================================================
+      # TypeScript Validation
+      # ==========================================================================
+
+      - name: Run type check
+        run: npx tsc --noEmit
+
+      # ==========================================================================
+      # ESLint Static Analysis
+      # ==========================================================================
+
+      - name: Run ESLint
+        run: npm run lint
+
+      # ==========================================================================
+      # Unit Tests
+      # ==========================================================================
+
+      - name: Run unit tests
+        run: npm run test -- --coverage
+
+      # ==========================================================================
+      # E2E Tests
+      # ==========================================================================
+
+      - name: Run e2e tests
+        run: npm run test:e2e
+
+      # ==========================================================================
+      # Production Build Validation
+      # ==========================================================================
+
+      - name: Build application
+        run: npm run build
+
+      # ==========================================================================
+      # Upload Coverage Reports
+      # ==========================================================================
+
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+
+        with:
+          name: coverage-report
+
+          path: |
+            coverage/
+            junit.xml
+
+          if-no-files-found: ignore
+
+      # ==========================================================================
+      # Upload Build Artifacts
+      # ==========================================================================
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+
+        with:
+          name: build-artifacts
+
+          path: |
+            dist/
+
+          if-no-files-found: ignore

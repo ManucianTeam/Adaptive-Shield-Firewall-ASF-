@@ -1,0 +1,174 @@
+# .github/workflows/release.yml
+
+name: ASF Release Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+  security-events: write
+
+env:
+  IMAGE_NAME: asf-auth-service
+
+jobs:
+  release:
+    name: Build • Release • Publish
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 45
+
+    steps:
+      # ==========================================================================
+      # Checkout Repository
+      # ==========================================================================
+
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      # ==========================================================================
+      # Setup Node.js
+      # ==========================================================================
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # ==========================================================================
+      # Install Dependencies
+      # ==========================================================================
+
+      - name: Install dependencies
+        run: npm ci
+
+      # ==========================================================================
+      # Validate Source
+      # ==========================================================================
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm run test -- --passWithNoTests
+
+      - name: Run e2e tests
+        run: npm run test:e2e -- --passWithNoTests
+
+      # ==========================================================================
+      # Build Production Artifacts
+      # ==========================================================================
+
+      - name: Build application
+        run: npm run build
+
+      # ==========================================================================
+      # Extract Version
+      # ==========================================================================
+
+      - name: Extract release version
+        id: version
+        run: |
+          echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+          echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      # ==========================================================================
+      # Setup Docker Buildx
+      # ==========================================================================
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # ==========================================================================
+      # Login To GitHub Container Registry
+      # ==========================================================================
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # ==========================================================================
+      # Build & Push Docker Image
+      # ==========================================================================
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+
+          push: true
+
+          tags: |
+            ghcr.io/${{ github.repository }}/asf-auth-service:latest
+            ghcr.io/${{ github.repository }}/asf-auth-service:${{ env.VERSION }}
+
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # ==========================================================================
+      # Generate Release Changelog
+      # ==========================================================================
+
+      - name: Generate release notes
+        id: release_notes
+        uses: mikepenz/release-changelog-builder-action@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # ==========================================================================
+      # Create GitHub Release
+      # ==========================================================================
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+
+          name: ASF Release ${{ env.VERSION }}
+
+          body: |
+            # Adaptive Shield Firewall (ASF)
+
+            Enterprise-grade adaptive security infrastructure release.
+
+            ## Release Information
+
+            - Version: `${{ env.VERSION }}`
+            - Commit: `${{ github.sha }}`
+            - Runtime: `Node.js 20`
+            - Container Registry: `GHCR`
+
+            ## Included Components
+
+            - Adaptive Authentication Engine
+            - AI Security Analyzers
+            - Distributed Session Infrastructure
+            - Redis Coordination Layer
+            - JWT Authentication Pipeline
+            - Threat Detection Middleware
+
+            ## Docker Image
+
+            ```bash
+            docker pull ghcr.io/${{ github.repository }}/asf-auth-service:${{ env.VERSION }}
+            ```
+
+            ## Automated Changelog
+
+            ${{ steps.release_notes.outputs.changelog }}
+
+          generate_release_notes: true
+
+      # ==========================================================================
