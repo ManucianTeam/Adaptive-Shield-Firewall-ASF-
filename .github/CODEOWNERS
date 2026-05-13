@@ -1,46 +1,230 @@
+```txt id="v2b4dr"
 # ============================================================================
-
-# ASF CODEOWNERS
-
+# Adaptive Shield Firewall (ASF)
+# CODEOWNERS
 # ============================================================================
-
-# Global Ownership
+#
+# Enterprise Ownership & Governance Configuration
+#
+# This file defines review ownership boundaries for the ASF ecosystem.
+# GitHub automatically requests reviews from the responsible teams whenever
+# pull requests modify protected infrastructure domains.
+#
+# ============================================================================
+# Organization
+# ============================================================================
+#
+# Organization:
+#   ManucianTeam
+#
+# Core Teams:
+#
+#   @ManucianTeam/security-team
+#   @ManucianTeam/backend-team
+#   @ManucianTeam/devops-team
+#   @ManucianTeam/docs-team
+#
+# ============================================================================
+# Governance Domains
+# ============================================================================
+#
+# SECURITY TEAM
+#   - Authentication
+#   - Authorization
+#   - JWT Infrastructure
+#   - Threat Detection
+#   - AI Security
+#   - Middleware Enforcement
+#   - Zero Trust Components
+#
+# BACKEND TEAM
+#   - Database Layer
+#   - Redis Infrastructure
+#   - Distributed Locks
+#   - Persistence Architecture
+#   - Data Coordination
+#
+# DEVOPS TEAM
+#   - Docker Infrastructure
+#   - CI/CD Pipelines
+#   - Release Automation
+#   - Security Scanning
+#   - Workflow Orchestration
+#
+# DOCS TEAM
+#   - Documentation
+#   - Security Policies
+#   - Governance Files
+#   - Setup Guides
+#   - Architecture References
+#
+# ============================================================================
+# Global Repository Ownership
+# ============================================================================
+#
+# Fallback ownership rule.
+# Applied when no more specific rule matches.
+#
+# ============================================================================
 
 * @ManucianTeam/security-team
 
 # ============================================================================
-
-# Authentication & Security
-
+# Authentication Infrastructure
 # ============================================================================
 
 /apps/auth-service/src/auth/ @ManucianTeam/security-team
-/apps/auth-service/src/ai-security/ @ManucianTeam/security-team
+
+/apps/auth-service/src/auth/controllers/ @ManucianTeam/security-team
+/apps/auth-service/src/auth/services/ @ManucianTeam/security-team
+/apps/auth-service/src/auth/guards/ @ManucianTeam/security-team
+/apps/auth-service/src/auth/strategies/ @ManucianTeam/security-team
+/apps/auth-service/src/auth/dto/ @ManucianTeam/security-team
+/apps/auth-service/src/auth/interfaces/ @ManucianTeam/security-team
+/apps/auth-service/src/auth/decorators/ @ManucianTeam/security-team
+/apps/auth-service/src/auth/middleware/ @ManucianTeam/security-team
+/apps/auth-service/src/auth/events/ @ManucianTeam/security-team
+
+/apps/auth-service/src/auth/auth.module.ts @ManucianTeam/security-team
+/apps/auth-service/src/auth/auth.constants.ts @ManucianTeam/security-team
 
 # ============================================================================
+# AI Security Infrastructure
+# ============================================================================
 
-# Backend Infrastructure
+/apps/auth-service/src/ai-security/ @ManucianTeam/security-team
 
+/apps/auth-service/src/ai-security/analyzers/ @ManucianTeam/security-team
+/apps/auth-service/src/ai-security/services/ @ManucianTeam/security-team
+/apps/auth-service/src/ai-security/interfaces/ @ManucianTeam/security-team
+/apps/auth-service/src/ai-security/ai-security.module.ts @ManucianTeam/security-team
+
+# ============================================================================
+# User Domain Infrastructure
+# ============================================================================
+
+/apps/auth-service/src/users/ @ManucianTeam/backend-team
+
+/apps/auth-service/src/users/controllers/ @ManucianTeam/backend-team
+/apps/auth-service/src/users/services/ @ManucianTeam/backend-team
+/apps/auth-service/src/users/entities/ @ManucianTeam/backend-team
+/apps/auth-service/src/users/repositories/ @ManucianTeam/backend-team
+/apps/auth-service/src/users/dto/ @ManucianTeam/backend-team
+
+# ============================================================================
+# Database Infrastructure
 # ============================================================================
 
 /apps/auth-service/src/database/ @ManucianTeam/backend-team
+
+/apps/auth-service/src/database/entities/ @ManucianTeam/backend-team
+/apps/auth-service/src/database/migrations/ @ManucianTeam/backend-team
+/apps/auth-service/src/database/seeds/ @ManucianTeam/backend-team
+/apps/auth-service/src/database/database.module.ts @ManucianTeam/backend-team
+
+# ============================================================================
+# Redis & Distributed Coordination
+# ============================================================================
+
 /apps/auth-service/src/redis/ @ManucianTeam/backend-team
 
+/apps/auth-service/src/redis/redis.service.ts @ManucianTeam/backend-team
+/apps/auth-service/src/redis/distributed-lock.service.ts @ManucianTeam/backend-team
+/apps/auth-service/src/redis/redis.module.ts @ManucianTeam/backend-team
+
+# ============================================================================
+# Shared Infrastructure
 # ============================================================================
 
-# CI/CD & DevOps
+/apps/auth-service/src/common/ @ManucianTeam/backend-team
+
+/apps/auth-service/src/common/filters/ @ManucianTeam/backend-team
+/apps/auth-service/src/common/interceptors/ @ManucianTeam/backend-team
+/apps/auth-service/src/common/exceptions/ @ManucianTeam/backend-team
+/apps/auth-service/src/common/utils/ @ManucianTeam/backend-team
+/apps/auth-service/src/common/constants/ @ManucianTeam/backend-team
+/apps/auth-service/src/common/logger/ @ManucianTeam/backend-team
 
 # ============================================================================
+# Configuration Infrastructure
+# ============================================================================
 
+/apps/auth-service/src/config/ @ManucianTeam/security-team
+
+/apps/auth-service/src/config/jwt.config.ts @ManucianTeam/security-team
+/apps/auth-service/src/config/redis.config.ts @ManucianTeam/backend-team
+/apps/auth-service/src/config/database.config.ts @ManucianTeam/backend-team
+/apps/auth-service/src/config/security.config.ts @ManucianTeam/security-team
+
+# ============================================================================
+# Application Bootstrap
+# ============================================================================
+
+/apps/auth-service/src/app.module.ts @ManucianTeam/backend-team
+/apps/auth-service/src/main.ts @ManucianTeam/backend-team
+
+# ============================================================================
+# Testing Infrastructure
+# ============================================================================
+
+/apps/auth-service/test/ @ManucianTeam/security-team
+
+/apps/auth-service/test/auth.e2e-spec.ts @ManucianTeam/security-team
+/apps/auth-service/test/jest-e2e.json @ManucianTeam/security-team
+
+# ============================================================================
+# CI/CD Infrastructure
+# ============================================================================
+
+/.github/ @ManucianTeam/devops-team
 /.github/workflows/ @ManucianTeam/devops-team
+
+/.github/workflows/docker-image.yml @ManucianTeam/devops-team
+/.github/workflows/security-scan.yml @ManucianTeam/devops-team
+/.github/workflows/codeql-analysis.yml @ManucianTeam/devops-team
+/.github/workflows/lint-and-test.yml @ManucianTeam/devops-team
+/.github/workflows/release.yml @ManucianTeam/devops-team
+/.github/workflows/dependency-audit.yml @ManucianTeam/devops-team
+
+# ============================================================================
+# Containerization & Deployment
+# ============================================================================
+
 /Dockerfile @ManucianTeam/devops-team
 /docker-compose.yml @ManucianTeam/devops-team
 
 # ============================================================================
+# TypeScript Infrastructure
+# ============================================================================
 
-# Documentation
+/tsconfig.json @ManucianTeam/backend-team
+/nest-cli.json @ManucianTeam/backend-team
+/package.json @ManucianTeam/backend-team
 
+# ============================================================================
+# Environment & Secrets Management
+# ============================================================================
+
+/.env @ManucianTeam/security-team
+/.gitignore @ManucianTeam/backend-team
+
+# ============================================================================
+# Documentation & Governance
 # ============================================================================
 
 /README.md @ManucianTeam/docs-team
 /.github/SECURITY.md @ManucianTeam/docs-team
+/.github/PULL_REQUEST_TEMPLATE.md @ManucianTeam/docs-team
+
+# ============================================================================
+# License & Community Standards
+# ============================================================================
+
+/LICENSE @ManucianTeam/docs-team
+/CODE_OF_CONDUCT.md @ManucianTeam/docs-team
+/CONTRIBUTING.md @ManucianTeam/docs-team
+
+# ============================================================================
+# End Of CODEOWNERS
+# ============================================================================
+```
