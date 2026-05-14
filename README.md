@@ -1,3 +1,5 @@
+![ASF Logo](docs/logo.svg)
+
 # Adaptive Shield Firewall (ASF) — Autonomous Behavioral Cyber Defense Gateway
 
 **Adaptive Shield Firewall (ASF)** is an **enterprise-grade behavioral security gateway** engineered for modern distributed systems, microservices architectures, and API-first infrastructures operating at high scale. ASF is built on a **Zero-Trust security paradigm** combined with **adaptive threat intelligence engineering**, replacing traditional static rule-based firewall mechanisms with **probabilistic behavioral inference**, **entropy-driven identity modeling**, and **real-time dynamic risk scoring systems**.
