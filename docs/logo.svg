@@ -1,0 +1,28 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Gradient Definitions -->
+  <defs>
+    <linearGradient id="shield_grad" x1="40" y1="40" x2="160" y2="160" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A237E"/> <!-- Deep Navy -->
+      <stop offset="1" stop-color="#7B1FA2"/> <!-- Violet -->
+    </linearGradient>
+    <radialGradient id="core_glow" cx="100" cy="100" r="40" fx="100" fy="100" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFB300"/> <!-- Amber Orange -->
+      <stop offset="1" stop-color="#FFB300" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- External Shield Structure -->
+  <path d="M100 20L40 45V100C40 145 100 180 100 180C100 180 160 145 160 100V45L100 20Z" 
+        stroke="url(#shield_grad)" stroke-width="8" stroke-linejoin="round"/>
+  
+  <!-- Distributed Nodes (Polygonal Accents) -->
+  <path d="M100 50L130 80M100 50L70 80M100 150L130 120M100 150L70 120" 
+        stroke="#7B1FA2" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Adaptive AI Core -->
+  <circle cx="100" cy="100" r="15" fill="#FFB300"/>
+  <circle cx="100" cy="100" r="30" fill="url(#core_glow)" opacity="0.5"/>
+  
+  <!-- Abstract Connectivity Lines -->
+  <circle cx="100" cy="100" r="45" stroke="#42A5F5" stroke-width="1" stroke-dasharray="4 4"/>
+</svg>
