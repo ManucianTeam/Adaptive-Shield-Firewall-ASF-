@@ -1,4 +1,4 @@
-![ASF Logo](docs/logo.svg)
+
 
 # Adaptive Shield Firewall (ASF) — Autonomous Behavioral Cyber Defense Gateway
 
@@ -143,12 +143,9 @@ npm run start:dev
 
 Enterprise-grade architecture visualization assets to be integrated:
 
-- Corporate identity logo (SVG vector format)  
-- Dark-mode security operations dashboard visualization  
-- Real-time attack surface heatmap visualization  
-- Behavioral intelligence flow diagram animation  
-- Threat analytics dashboard interface mockups  
-- Live system telemetry visualization feed  
+![ASF Logo](docs/logo.svg)
+
+![ASF dashboard](docs/dashboard.svg)
 
 ---
 
