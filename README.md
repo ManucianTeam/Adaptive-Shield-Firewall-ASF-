@@ -22,7 +22,7 @@ The architecture is structured around four core security primitives: **behaviora
 
 ASF implements a hybrid deterministic–probabilistic evaluation model where every request is mapped into a **high-dimensional behavioral identity graph**. Instead of evaluating whether a request matches a known malicious pattern, ASF evaluates whether the request exhibits statistically valid behavioral consistency within an expected probabilistic manifold.
 
-This paradigm enables detection of sophisticated adversarial techniques including automated bot frameworks, adaptive scraping systems, distributed credential stuffing networks, session hijacking attempts, replay-based exploitation chains, API abuse orchestration, and high-frequency concurrency manipulation attacks.
+This paradigm enables detection of sophisticated adversarial techniques, including automated bot frameworks, adaptive scraping systems, distributed credential stuffing networks, session hijacking attempts, replay-based exploitation chains, API abuse orchestration, and high-frequency concurrency manipulation attacks.
 
 ---
 
@@ -145,18 +145,21 @@ Enterprise-grade architecture visualization assets to be integrated:
 
 01. Core Identity & Branding
 The visual foundation of ASF represents the convergence of distributed security and adaptive intelligence. The minimalist shield geometry symbolizes robust protection, while the amber-violet core reflects the dynamic risk-scoring engine at the heart of the system:
+
 ![ASF Logo](docs/logo.svg)
 
 ＩＤΞＮＴＩＴＹ ＰＲＩＭＩＴＩＶΞ — A vector-precision emblem featuring a central AI core and distributed node accents, engineered with a dark minimal aesthetic to represent the ManucianTeam defensive paradigm.
 
 Real-Time Security Observability
 The ASF Dashboard provides a high-fidelity interface for monitoring system health and threat evolution. It transforms multidimensional telemetry into actionable intelligence, allowing architects to visualize the "pulse" of the entire infrastructure.
+
 ![ASF dashboard](docs/dashboard.svg)
 
 ＯＢＳΞＲＶΛＢＩＬＩＴＹ ＭＯＤＵＬΞ — A high-fidelity interface featuring a Behavioral Drift Chart, Entropy Variance Heatmap, and a Live Telemetry Stream for real-time risk scoring and distributed node status monitoring.
 
 Neural-Behavioral Processing Pipeline
 This advanced schematic visualizes the autonomous decision-making journey of a request. It maps the transition from raw traffic to verified identity, illustrating how the system enforces security without compromising throughput.
+
 ![ASF pipeline](docs/pipeline.svg)
 
 ◈ Phase A: Architectural Intelligence & Risk Assessment — The Ingress Layer captures raw traffic for entropy analysis before routing it to the ASF Core, where probabilistic algorithms calculate real-time risk scores based on behavioral drift.
