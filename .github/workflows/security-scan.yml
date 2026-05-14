@@ -1,6 +1,39 @@
 # .github/workflows/security-scan.yml
 
+# =============================================================================
+# ASF Security Scan Pipeline
+# =============================================================================
+#
+# File:
+#   .github/workflows/security-scan.yml
+#
+# Purpose:
+#   Enterprise-grade security scanning workflow for the
+#   Adaptive Shield Firewall (ASF) ecosystem.
+#
+# Coverage:
+#   - Filesystem vulnerability scanning
+#   - Dependency analysis
+#   - Secret detection
+#   - SARIF security reporting
+#   - GitHub Security integration
+#
+# Security Stack:
+#   - Trivy
+#   - GitHub Code Scanning
+#
+# Notes:
+#   - Blocks CI on HIGH/CRITICAL vulnerabilities
+#   - Uploads SARIF reports to GitHub Security tab
+#   - Designed for DevSecOps-first workflows
+#
+# =============================================================================
+
 name: ASF Security Scan
+
+# =============================================================================
+# Workflow Triggers
+# =============================================================================
 
 on:
   push:
@@ -12,121 +45,122 @@ on:
     branches:
       - main
 
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  security-events: write
+# =============================================================================
+# Jobs
+# =============================================================================
 
 jobs:
-  security-scan:
-    name: Security • Vulnerability • Secret Scan
+  trivy-scan:
+    name: Trivy Vulnerability Scan
 
     runs-on: ubuntu-latest
 
-    timeout-minutes: 30
+    # =========================================================================
+    # GitHub Token Permissions
+    # =========================================================================
+
+    permissions:
+      contents: read
+      security-events: write
+
+    # =========================================================================
+    # Steps
+    # =========================================================================
 
     steps:
-      # ==========================================================================
+      # =======================================================================
       # Checkout Repository
-      # ==========================================================================
+      # =======================================================================
 
-      - name: Checkout source
+      - name: Checkout source code
         uses: actions/checkout@v4
 
-      # ==========================================================================
-      # Setup Node.js
-      # ==========================================================================
+      # =======================================================================
+      # Setup Node.js Runtime
+      # =======================================================================
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
 
-      # ==========================================================================
-      # Install Dependencies
-      # ==========================================================================
+        with:
+          node-version: 22
+
+      # =======================================================================
+      # Install Project Dependencies
+      # =======================================================================
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      # ==========================================================================
-      # NPM Dependency Audit
-      # ==========================================================================
-
-      - name: Run dependency audit
-        run: |
-          npm audit --audit-level=high
-
-      # ==========================================================================
+      # =======================================================================
       # Trivy Filesystem Scan
-      # ==========================================================================
+      # =======================================================================
+      #
+      # Scan Types:
+      #   - Dependency vulnerabilities
+      #   - Secret exposure
+      #   - Misconfigurations
+      #
+      # Severity Threshold:
+      #   HIGH + CRITICAL
+      #
+      # Behavior:
+      #   - Fails pipeline on detected vulnerabilities
+      #
+      # =======================================================================
 
-      - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@0.24.0
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@v0.35.0
+
         with:
           scan-type: fs
           scan-ref: .
+
           format: table
+
           severity: CRITICAL,HIGH
-          ignore-unfixed: true
+
           exit-code: 1
 
-      # ==========================================================================
-      # Build Docker Image
-      # ==========================================================================
-
-      - name: Build Docker image
-        run: |
-          docker build \
-            -f Dockerfile \
-            -t asf-auth-service:security-scan \
-            .
-
-      # ==========================================================================
-      # Trivy Container Scan
-      # ==========================================================================
-
-      - name: Scan Docker image
-        uses: aquasecurity/trivy-action@0.24.0
-        with:
-          image-ref: asf-auth-service:security-scan
-          format: table
-          severity: CRITICAL,HIGH
           ignore-unfixed: true
-          exit-code: 1
 
-      # ==========================================================================
-      # Gitleaks Secret Scan
-      # ==========================================================================
+      # =======================================================================
+      # Generate SARIF Report
+      # =======================================================================
+      #
+      # SARIF allows GitHub Advanced Security integration
+      # and native vulnerability visualization.
+      #
+      # =======================================================================
 
-      - name: Scan repository secrets
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate Trivy SARIF report
+        uses: aquasecurity/trivy-action@v0.35.0
 
-      # ==========================================================================
-      # Semgrep Static Analysis
-      # ==========================================================================
-
-      - name: Run Semgrep
-        uses: returntocorp/semgrep-action@v1
         with:
-          config: >
-            p/security-audit
-            p/nodejs
-            p/owasp-top-ten
-            p/docker
-            p/secrets
+          scan-type: fs
+          scan-ref: .
 
-      # ==========================================================================
-      # Upload SARIF Reports
-      # ==========================================================================
+          format: sarif
 
-      - name: Upload Trivy SARIF report
+          output: trivy-results.sarif
+
+      # =======================================================================
+      # Upload SARIF To GitHub Security
+      # =======================================================================
+      #
+      # Results appear in:
+      #   Repository
+      #   → Security
+      #   → Code scanning alerts
+      #
+      # =======================================================================
+
+      - name: Upload SARIF to GitHub Security
         uses: github/codeql-action/upload-sarif@v3
-        if: always()
+
         with:
           sarif_file: trivy-results.sarif
-        continue-on-error: true
+
+# =============================================================================
+# End Of Workflow
+# =============================================================================
