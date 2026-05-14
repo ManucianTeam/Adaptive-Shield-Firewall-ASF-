@@ -145,7 +145,12 @@ Enterprise-grade architecture visualization assets to be integrated:
 
 ![ASF Logo](docs/logo.svg)
 
+-Logo of this project
+
+
 ![ASF dashboard](docs/dashboard.svg)
+
+-This behavioral intelligence flow diagram illustrates the sophisticated and autonomous data processing pipeline of the Adaptive Shield Firewall. It effectively demonstrates the system's capacity for real-time analysis and response within complex distributed infrastructures. The Ingress Layer serves as the primary entry point for all incoming requests, where it performs initial entropy analysis to identify raw traffic patterns. At the center of the architecture is the ASF Core. This neural processing unit operates probabilistic inference algorithms to continuously calculate risk scores based on detected behavioral drift. Secure requests are represented as amber particles that navigate smoothly through the AI core before being precisely orchestrated to stable distributed nodes. Conversely, anomalous threats are depicted as red vectors that the system identifies and forcibly redirects into a dedicated quarantine zone for isolation and mitigation. The neural pulse effect within the core and the panoramic scanline represent the framework's commitment to continuous monitoring and self-recalibration against evolving network environments. The visual identity utilizes a dark minimal aesthetic with navy violet and amber accents to emphasize the technical depth and enterprise-grade reliability of the security gateway. This schematic serves as a functional map of the zero-trust paradigm, where identity validation is derived from probabilistic behavioral coherence rather than static credentials.
 
 ---
 
