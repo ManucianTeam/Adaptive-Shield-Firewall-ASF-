@@ -1,0 +1,173 @@
+# ============================================================
+# ASF - Adaptive Shield Firewall
+# CodeQL Advanced Security Pipeline (Firewall-Grade CI Security)
+# ============================================================
+#
+# PURPOSE:
+# This workflow is designed for ASF (Adaptive Shield Firewall),
+# a behavioral security gateway system. It enables continuous
+# static analysis (SAST) using CodeQL for multi-language services
+# typically found in API gateways, AI engines, and microservices.
+#
+# SECURITY MODEL:
+# - Zero-Trust CI pipeline validation
+# - Multi-language static security scanning
+# - Security-extended + security-and-quality queries
+# - Concurrency-safe execution for CI scaling
+# - Artifact-based audit trail for compliance systems
+#
+# TARGET SYSTEMS:
+# - API Gateway (NestJS / Node.js)
+# - AI Engine (Python / ML modules)
+# - Security Middleware (TypeScript / JavaScript)
+# - Distributed microservices (Go / Java / C++)
+#
+# ============================================================
+
+name: "ASF CodeQL Security Gateway Scan"
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    - cron: "35 19 * * 1"
+
+# Prevent overlapping security scans on same branch
+concurrency:
+  group: codeql-asf-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: "ASF Security Analysis (${{ matrix.language }})"
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+      packages: read
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        language:
+          - javascript-typescript  # Gateway / API layer (NestJS)
+          - python                 # AI Engine / anomaly detection
+          - go                     # High-performance services (optional)
+          - java-kotlin           # Enterprise modules (optional)
+          - c-cpp                 # Low-level security components
+        build-mode:
+          - none
+
+    steps:
+
+      # --------------------------------------------------------
+      # Step 1: Source Code Checkout
+      # --------------------------------------------------------
+      - name: Checkout ASF Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # Full history improves CodeQL data-flow accuracy
+
+      # --------------------------------------------------------
+      # Step 2: Initialize CodeQL Engine
+      # --------------------------------------------------------
+      - name: Initialize CodeQL Analysis Engine
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+
+          # Security query packs:
+          # - security-extended: deep vulnerability detection
+          # - security-and-quality: additional code quality issues
+          queries: security-extended,security-and-quality
+
+      # --------------------------------------------------------
+      # Step 3: Runtime Setup (Language-Specific)
+      # --------------------------------------------------------
+
+      - name: Setup Node.js Runtime (Gateway Layer)
+        if: matrix.language == 'javascript-typescript'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Setup Python Runtime (AI / Anomaly Engine)
+        if: matrix.language == 'python'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Setup Java Runtime (Enterprise Modules)
+        if: matrix.language == 'java-kotlin'
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
+      # --------------------------------------------------------
+      # Step 4: Dependency Installation (Security Context)
+      # --------------------------------------------------------
+
+      - name: Install Node.js Dependencies
+        if: matrix.language == 'javascript-typescript'
+        run: |
+          if [ -f package.json ]; then
+            npm ci || npm install
+          fi
+
+      - name: Install Python Dependencies
+        if: matrix.language == 'python'
+        run: |
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+
+      # --------------------------------------------------------
+      # Step 5: Build Phase (For Compiled Languages)
+      # --------------------------------------------------------
+      - name: Autofill Build Pipeline (Compiled Languages)
+        if: matrix.language != 'javascript-typescript' && matrix.language != 'python'
+        uses: github/codeql-action/autobuild@v4
+
+      # --------------------------------------------------------
+      # Step 6: CodeQL Security Analysis Execution
+      # --------------------------------------------------------
+      - name: Execute ASF Security Scan (CodeQL Analysis)
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:${{ matrix.language }}"
+
+      # --------------------------------------------------------
+      # Step 7: Security Artifacts Export (Audit / SIEM Ready)
+      # --------------------------------------------------------
+      - name: Export Security Analysis Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asf-codeql-results-${{ matrix.language }}
+          path: |
+            /home/runner/work/_temp/codeql_databases
+            /home/runner/work/_temp/codeql-sarif
+
+      # --------------------------------------------------------
+      # Step 8: Post-Execution Security Cleanup
+      # --------------------------------------------------------
+      - name: Security Cleanup (Reduce CI Exposure Surface)
+        if: always()
+        run: |
+          rm -rf ~/.npm || true
+          rm -rf ~/.cache || true
+          rm -rf /tmp/* || true
+
+# ============================================================
+# END OF ASF CODEQL SECURITY PIPELINE
+# ============================================================
