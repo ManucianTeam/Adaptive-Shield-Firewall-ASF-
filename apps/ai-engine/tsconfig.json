@@ -1,43 +1,121 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
+    /* ========================================================
+     * Runtime Targets
+     * ====================================================== */
 
-    "emitDecoratorMetadata": true,
+    "target": "ES2022",
+
+    "module": "commonjs",
+
+    "lib": ["ES2022"],
+
+    /* ========================================================
+     * NestJS Decorators
+     * ====================================================== */
+
     "experimentalDecorators": true,
 
-    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
 
-    "target": "ES2021",
-    "sourceMap": true,
-
-    "outDir": "./dist",
-
-    "baseUrl": "./",
-
-    "incremental": true,
-
-    "skipLibCheck": true,
-
-    "strict": false,
+    /* ========================================================
+     * Module Resolution
+     * ====================================================== */
 
     "moduleResolution": "node",
 
+    "baseUrl": "./",
+
+    "paths": {
+      "@/*": ["apps/*"],
+
+      "@libs/*": ["libs/*"]
+    },
+
+    "resolveJsonModule": true,
+
+    "allowSyntheticDefaultImports": true,
+
     "esModuleInterop": true,
 
-    "resolveJsonModule": true
+    /* ========================================================
+     * Output
+     * ====================================================== */
+
+    "outDir": "./dist",
+
+    "rootDir": "./",
+
+    "declaration": true,
+
+    "sourceMap": true,
+
+    "removeComments": true,
+
+    "incremental": true,
+
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+
+    /* ========================================================
+     * Strictness
+     * ====================================================== */
+
+    "strict": true,
+
+    "strictNullChecks": true,
+
+    "noImplicitAny": true,
+
+    "noImplicitReturns": true,
+
+    "noFallthroughCasesInSwitch": true,
+
+    "forceConsistentCasingInFileNames": true,
+
+    /* ========================================================
+     * Performance
+     * ====================================================== */
+
+    "skipLibCheck": true,
+
+    /* ========================================================
+     * Type Safety
+     * ====================================================== */
+
+    "useUnknownInCatchVariables": false,
+
+    "noUncheckedIndexedAccess": false,
+
+    /* ========================================================
+     * Interop
+     * ====================================================== */
+
+    "isolatedModules": false
   },
+
+  /* ==========================================================
+   * Included Sources
+   * ======================================================== */
 
   "include": [
     "apps/**/*.ts",
+
     "libs/**/*.ts"
   ],
 
+  /* ==========================================================
+   * Excluded Sources
+   * ======================================================== */
+
   "exclude": [
     "node_modules",
+
     "dist",
+
+    "coverage",
+
     "test",
+
     "**/*.spec.ts"
   ]
 }

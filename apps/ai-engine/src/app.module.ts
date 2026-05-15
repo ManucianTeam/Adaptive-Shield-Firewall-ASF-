@@ -1,116 +1,227 @@
-// apps/gateway/src/app.module.ts
+/* ============================================================
+ * ASF AI Engine
+ * Root AI Runtime Module
+ * File: app.module.ts
+ * ============================================================
+ *
+ * PURPOSE:
+ * Central orchestration module for the ASF AI Engine.
+ *
+ * This module coordinates:
+ * - anomaly intelligence
+ * - behavioral analysis
+ * - adaptive scoring systems
+ * - race-condition intelligence
+ * - distributed inference pipelines
+ * - telemetry aggregation
+ * - AI-driven threat correlation
+ *
+ * ============================================================
+ *
+ * SECURITY OBJECTIVES:
+ * - Centralize AI orchestration
+ * - Harden inference pipelines
+ * - Prevent inconsistent scoring
+ * - Support zero-trust analysis
+ * - Enable distributed intelligence
+ *
+ * ============================================================
+ *
+ * DESIGN PRINCIPLES:
+ * - Modular architecture
+ * - Stateless AI services
+ * - Distributed compatibility
+ * - Explainable intelligence
+ * - Future ML extensibility
+ *
+ * ============================================================
+ *
+ * IMPORTANT:
+ * This module acts only as the AI composition root.
+ *
+ * NEVER:
+ * - implement heavy logic here
+ * - expose internal AI heuristics
+ * - bypass telemetry pipelines
+ * - trust unvalidated inference data
+ *
+ * ============================================================
+ */
 
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
+
 import { ConfigModule } from '@nestjs/config';
 
-import { MongooseModule } from '@nestjs/mongoose';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
-// =========================
-// MODELS
-// =========================
+/**
+ * ============================================================
+ * Controllers
+ * ============================================================
+ */
 
-import {
-  Anomaly,
-  AnomalySchema,
-} from './database/models/anomaly.model';
+import { AppController } from './app.controller';
 
-import {
-  Behavior,
-  BehaviorSchema,
-} from './database/models/behavior.model';
+/**
+ * ============================================================
+ * AI Services
+ * ============================================================
+ */
 
-import {
-  Race,
-  RaceSchema,
-} from './database/models/race.model';
+import { AnomalyEngineService } from './services/anomaly-engine.service';
 
-import {
-  Scoring,
-  ScoringSchema,
-} from './database/models/scoring.model';
+import { BehaviorAnalysisService } from './services/behavior-analysis.service';
 
-// =========================
-// AI ENGINES
-// =========================
+import { AdaptiveScoringService } from './services/adaptive-scoring.service';
 
-import { AIScoreEngine } from './ai-engine/ai-score.engine';
-import { ConfidenceEngine } from './ai-engine/confidence.engine';
-import { RiskScoreEngine } from './ai-engine/risk-score.engine';
+import { RaceDetectionService } from './services/race-detection.service';
 
-// =========================
-// SERVICES
-// =========================
+import { ThreatCorrelationService } from './services/threat-correlation.service';
 
-import { AIEngineService } from './ai-engine/ai-engine.service';
-import { DetectionService } from './ai-engine/detection.service';
-import { PredictionService } from './ai-engine/prediction.service';
-import { TrainingService } from './ai-engine/training.service';
+/**
+ * ============================================================
+ * Middleware
+ * ============================================================
+ */
+
+import { TelemetryMiddleware } from './middleware/telemetry.middleware';
+
+import { InferenceContextMiddleware } from './middleware/inference-context.middleware';
+
+/**
+ * ============================================================
+ * Interceptors
+ * ============================================================
+ */
+
+import { AIInferenceInterceptor } from './interceptors/ai-inference.interceptor';
+
+/**
+ * ============================================================
+ * Runtime Module
+ * ============================================================
+ */
 
 @Module({
+  /**
+   * ==========================================================
+   * Imports
+   * ==========================================================
+   */
+
   imports: [
-    // =========================
-    // ENV
-    // =========================
+    /**
+     * ========================================================
+     * Global Config
+     * ========================================================
+     */
 
     ConfigModule.forRoot({
       isGlobal: true,
+
+      cache: true,
+
+      expandVariables: true,
     }),
-
-    // =========================
-    // DATABASE
-    // =========================
-
-    MongooseModule.forRoot(
-      process.env.MONGO_URI ||
-        'mongodb://localhost:27017/security-ai',
-    ),
-
-    // =========================
-    // SCHEMAS
-    // =========================
-
-    MongooseModule.forFeature([
-      {
-        name: Anomaly.name,
-        schema: AnomalySchema,
-      },
-      {
-        name: Behavior.name,
-        schema: BehaviorSchema,
-      },
-      {
-        name: Race.name,
-        schema: RaceSchema,
-      },
-      {
-        name: Scoring.name,
-        schema: ScoringSchema,
-      },
-    ]),
   ],
 
-  // =========================
-  // PROVIDERS
-  // =========================
+  /**
+   * ==========================================================
+   * Controllers
+   * ==========================================================
+   */
+
+  controllers: [AppController],
+
+  /**
+   * ==========================================================
+   * Providers
+   * ==========================================================
+   */
 
   providers: [
-    // Engines
-    AIScoreEngine,
-    ConfidenceEngine,
-    RiskScoreEngine,
+    /**
+     * ========================================================
+     * AI Core Services
+     * ========================================================
+     */
 
-    // Services
-    AIEngineService,
-    DetectionService,
-    PredictionService,
-    TrainingService,
+    AnomalyEngineService,
+
+    BehaviorAnalysisService,
+
+    AdaptiveScoringService,
+
+    RaceDetectionService,
+
+    ThreatCorrelationService,
+
+    /**
+     * ========================================================
+     * Global AI Interceptor
+     * ========================================================
+     */
+
+    {
+      provide: APP_INTERCEPTOR,
+
+      useClass: AIInferenceInterceptor,
+    },
   ],
+
+  /**
+   * ==========================================================
+   * Exports
+   * ==========================================================
+   */
 
   exports: [
-    AIEngineService,
-    DetectionService,
-    PredictionService,
-    TrainingService,
+    AnomalyEngineService,
+
+    BehaviorAnalysisService,
+
+    AdaptiveScoringService,
+
+    RaceDetectionService,
+
+    ThreatCorrelationService,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  /**
+   * ==========================================================
+   * Middleware Pipeline
+   * ==========================================================
+   */
+
+  configure(consumer: MiddlewareConsumer): void {
+    /**
+     * ========================================================
+     * Inference Context Middleware
+     * ========================================================
+     */
+
+    consumer.apply(InferenceContextMiddleware).forRoutes({
+      path: '*',
+
+      method: RequestMethod.ALL,
+    });
+
+    /**
+     * ========================================================
+     * Telemetry Middleware
+     * ========================================================
+     */
+
+    consumer.apply(TelemetryMiddleware).forRoutes({
+      path: '*',
+
+      method: RequestMethod.ALL,
+    });
+  }
+}
