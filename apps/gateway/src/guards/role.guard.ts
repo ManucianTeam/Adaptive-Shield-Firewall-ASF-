@@ -12,7 +12,7 @@
  * SECURITY OBJECTIVES:
  * - Enforce authorization boundaries
  * - Prevent privilege escalation
- * - Protect sensitive control-plane operations
+ * - Protect sensitive control-plane operationsS
  * - Generate authorization telemetry
  * - Support forensic access tracing
  *
