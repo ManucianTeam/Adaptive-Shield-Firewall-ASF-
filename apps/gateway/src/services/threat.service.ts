@@ -51,6 +51,7 @@
  */
 
 import { Injectable, Logger } from '@nestjs/common';
+import { randomUUID } from 'crypto';
 
 import { Request } from 'express';
 
@@ -135,8 +136,8 @@ export class ThreatService {
      * Request Identity
      * ========================================================
      */
-
-    const requestId = context.requestId || crypto.randomUUID();
+    context.requestId = context.requestId || randomUUID();
+    const requestId = context.requestId;
 
     const indicators: string[] = [];
 
