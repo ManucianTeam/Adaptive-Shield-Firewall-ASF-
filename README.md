@@ -1,4 +1,3 @@
-![Logo](docs/logo.svg)
 
 
 # Adaptive Shield Firewall (ASF) — Autonomous Behavioral Cyber Defense Gateway
