@@ -51,6 +51,7 @@ import {
 import { Observable } from 'rxjs';
 
 import { Request } from 'express';
+import sanitizeHtml from 'sanitize-html';
 
 /**
  * ============================================================
@@ -236,7 +237,13 @@ export class SanitizeInterceptor implements NestInterceptor {
          */
 
         .replace(/<[^>]+>/g, '')
+    const htmlSanitized = sanitizeHtml(value, {
+      allowedTags: [],
+      allowedAttributes: {},
+    });
 
+    return (
+      htmlSanitized
         /**
          * ========================================================
          * SQL Injection Pattern Reduction
