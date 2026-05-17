@@ -206,8 +206,13 @@ export class SanitizeInterceptor implements NestInterceptor {
    */
 
   private sanitizeString(value: string): string {
-    return (
-      value
+    let sanitized = value;
+    let previous: string;
+
+    do {
+      previous = sanitized;
+
+      sanitized = sanitized
         /**
          * ========================================================
          * Script Tag Neutralization
@@ -246,7 +251,9 @@ export class SanitizeInterceptor implements NestInterceptor {
          * ========================================================
          */
 
-        .trim()
-    );
+        .trim();
+    } while (sanitized !== previous);
+
+    return sanitized;
   }
 }
