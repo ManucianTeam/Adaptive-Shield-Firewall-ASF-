@@ -45,7 +45,7 @@
 
     "@nestjs/config": "^3.3.0",
 
-    "@nestjs/core": "^10.4.22",
+    "@nestjs/core": "^11.1.21",
 
     "@nestjs/event-emitter": "^3.1.0",
 
@@ -53,11 +53,11 @@
 
     "@nestjs/mapped-types": "^2.1.0",
 
-    "@nestjs/mongoose": "^10.1.0",
+    "@nestjs/mongoose": "^11.0.4",
 
     "@nestjs/passport": "^11.0.5",
 
-    "@nestjs/platform-express": "^10.4.22",
+    "@nestjs/platform-express": "^11.1.21",
 
     "@nestjs/throttler": "^6.5.0",
 
@@ -107,7 +107,7 @@
 
     "@nestjs/schematics": "^10.1.4",
 
-    "@nestjs/testing": "^10.4.22",
+    "@nestjs/testing": "^11.1.21",
 
     "@types/bcrypt": "^6.0.0",
 
