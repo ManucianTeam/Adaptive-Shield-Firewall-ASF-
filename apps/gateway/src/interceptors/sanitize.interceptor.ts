@@ -207,6 +207,36 @@ export class SanitizeInterceptor implements NestInterceptor {
    */
 
   private sanitizeString(value: string): string {
+    let sanitized = value;
+    let previous: string;
+
+    do {
+      previous = sanitized;
+
+      sanitized = sanitized
+        /**
+         * ========================================================
+         * Script Tag Neutralization
+         * ========================================================
+         */
+
+        .replace(/<script.*?>.*?<\/script>/gi, '')
+
+        /**
+         * ========================================================
+         * Dangerous Inline Event Removal
+         * ========================================================
+         */
+
+        .replace(/on\w+=".*?"/gi, '')
+
+        /**
+         * ========================================================
+         * HTML Tag Stripping
+         * ========================================================
+         */
+
+        .replace(/<[^>]+>/g, '')
     const htmlSanitized = sanitizeHtml(value, {
       allowedTags: [],
       allowedAttributes: {},
@@ -228,7 +258,9 @@ export class SanitizeInterceptor implements NestInterceptor {
          * ========================================================
          */
 
-        .trim()
-    );
+        .trim();
+    } while (sanitized !== previous);
+
+    return sanitized;
   }
 }
