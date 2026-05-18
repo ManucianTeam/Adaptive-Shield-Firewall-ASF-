@@ -1,28 +1,39 @@
 {
-  "name": "adaptive-shield-firewall-asf",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "start:gateway": "cd apps/gateway && nest start --watch",
-    "start:ai": "cd apps/ai-engine && nest start --watch",
-    "start:all": "npm-run-all --parallel start:gateway start:ai",
-    "dev:ai": "cd apps/ai-engine && nest start --watch",
-    "dev:gateway": "cd apps/gateway && nest start --watch",
-    "dev": "npm-run-all --parallel dev:ai dev:gateway",
-    "build": "npx nest build",
-    "test": "jest"
-  },
-  "devDependencies": {
-    "@types/jest": "^30.0.0",
-    "@types/node": "^25.8.0",
-    "npm-run-all": "^4.1.5"
-  },
-  "dependencies": {
-    "@nestjs/common": "^11.1.19",
-    "@nestjs/core": "^11.1.19",
-    "crypto": "^1.0.1",
-    "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.2",
-    "sanitize-html": "^2.17.4"
-  }
+"name": "adaptive-shield-firewall-asf",
+"version": "1.0.0",
+"private": true,
+
+"scripts": {
+"build": "nest build",
+"start": "node dist/main",
+"start": "nest start --watch",
+"lint": "eslint .",
+"test": "jest",
+"typecheck": "tsc --noEmit"
+},
+
+"dependencies": {
+"@nestjs/common": "^11.1.0",
+"@nestjs/core": "^11.1.0",
+"@nestjs/platform-express": "^11.1.0",
+"reflect-metadata": "^0.2.2",
+"rxjs": "^7.8.1"
+},
+
+"devDependencies": {
+"@nestjs/cli": "^11.0.5",
+"@nestjs/schematics": "^11.0.1",
+"@nestjs/testing": "^11.1.0",
+
+"@types/node": "^22.15.3",
+
+"typescript": "^5.8.3",
+"ts-node": "^10.9.2",
+
+"eslint": "^9.27.0",
+"@eslint/js": "^9.27.0",
+
+"jest": "^30.0.0"
+
+}
 }
