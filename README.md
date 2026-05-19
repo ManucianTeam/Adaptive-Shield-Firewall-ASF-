@@ -155,7 +155,7 @@ The ASF Dashboard provides a high-fidelity interface for monitoring system healt
 
 ![ASF dashboard](docs/dashboard.svg)
 
-ＯＢＳΞＲＶΛＢＩＬＩＴＹ ＭＯＤＵＬΞ — A high-fidelity interface featuring a Behavioral Drift Chart, Entropy Variance Heatmap, and a Live Telemetry Stream for real-time risk scoring and distributed node status monitoring.
+Observability Module — A high-fidelity interface featuring a Behavioral Drift Chart, Entropy Variance Heatmap, and a Live Telemetry Stream for real-time risk scoring and distributed node status monitoring.
 
 Neural-Behavioral Processing Pipeline
 This advanced schematic visualizes the autonomous decision-making journey of a request. It maps the transition from raw traffic to verified identity, illustrating how the system enforces security without compromising throughput.
